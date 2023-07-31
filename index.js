@@ -1,0 +1,41 @@
+const express = require('express')
+const cors = require('cors')
+const http = require('http');
+const socketIO = require('socket.io');
+require('dotenv').config()
+
+const app = express();
+app.use(cors())
+
+app.get('/', (req, res) => {
+    res.send('Hello, World')
+})
+
+app.get('/tasks', (req, res) => {
+    res.send([
+        { description: 'Build IVR tool', assignee: 'Jay' },
+        { description: 'Build Externals API', assignee: 'Greg' },
+    ])
+})
+
+const server = http.createServer(app);
+const io = socketIO(server, {
+    maxHttpBufferSize: 1e8,
+    cors: { origin: `*` },
+});
+io.on('connection', (socket) => {
+    console.log('A user connected');
+
+    // Handle events from the client
+    socket.on('getUser', (cb) => cb(['Andy', 'Greg', 'Jay', 'Mac', 'Jhe', 'Alexus']));
+
+    // Handle disconnections
+    socket.on('disconnect', () => console.log('A user disconnected'))
+});
+
+
+const port = process.env.PORT
+
+server.listen(4000, () => {
+    console.log(`Listening on port http://localhost:${port}`)
+})
