@@ -2,21 +2,23 @@ const express = require('express')
 const cors = require('cors')
 const http = require('http');
 const socketIO = require('socket.io');
+const path = require('path');
 require('dotenv').config()
 
 const app = express();
-app.use(cors())
-
-app.get('/', (req, res) => {
-    res.send('Hello, World')
-})
+app.use(cors());
 
 app.get('/tasks', (req, res) => {
     res.send([
         { description: 'Build IVR tool', assignee: 'Jay' },
         { description: 'Build Externals API', assignee: 'Greg' },
     ])
-})
+});
+
+app.get('*', (req, res) => {
+    console.log(path.join(__dirname, `../frontend/build`, 'index.html'))
+    res.sendFile(path.join(__dirname, `../frontend/build`, 'index.html'))
+});
 
 const server = http.createServer(app);
 const io = socketIO(server, {
@@ -36,6 +38,6 @@ io.on('connection', (socket) => {
 
 const port = process.env.PORT
 
-server.listen(4000, () => {
+server.listen(port, () => {
     console.log(`Listening on port http://localhost:${port}`)
 })
