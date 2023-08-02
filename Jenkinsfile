@@ -1,9 +1,6 @@
 pipeline {
     agent any
-    options {
-        // Enable GitHub hook trigger for GITScm polling
-        triggers { githubPush() }
-    }
+    tools { nodejs 'Node' }
 
     stages {
         stage('Install Dependencies') {
@@ -13,9 +10,8 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'pm2 restart backend'
-                }
+                sh "pm2 restart 0"
             }
         }
+    }
 }
-
