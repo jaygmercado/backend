@@ -10,7 +10,7 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh "pm2 restart 0"
+                sh "pm2 start --name backend npm -- start"
             }
         }
     }
