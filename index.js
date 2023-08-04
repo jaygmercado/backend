@@ -10,7 +10,7 @@ app.use(cors());
 
 app.get('/tasks', (req, res) => {
     res.send([
-        { description: 'Build IVR tool', assignee: 'Jay' },
+        { description: 'Build IVR tool', assignee: 'Jay Mercado' },
         { description: 'Build Externals API', assignee: 'Greg' },
     ])
 });
